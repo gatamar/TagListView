@@ -15,7 +15,42 @@ class ViewController: UIViewController, TagListViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //setupStoryboardViews()
+        setupViewsManually()
+    }
+    
+    private func setupViewsManually() {
+        let simpleView = UIView(frame: view.bounds)
+        simpleView.backgroundColor = .white
+        view.addSubview(simpleView)
         
+        let tagView = TagListView(frame: CGRect(x: 0, y: simpleView.bounds.height/2, width: simpleView.bounds.width, height: simpleView.bounds.height/2))
+        simpleView.addSubview(tagView)
+        
+        tagView.backgroundColor = .blue
+        
+        tagView.delegate = self
+        tagView.textFont = .systemFont(ofSize: 15)
+        tagView.shadowRadius = 2
+        tagView.shadowOpacity = 0.4
+        tagView.shadowColor = UIColor.black
+        tagView.shadowOffset = CGSize(width: 1, height: 1)
+        tagView.addTag("Inboard")
+        tagView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
+        tagView.addTag("Pomotodo")
+        tagView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
+        tagView.addTag("Halo Word")
+        tagView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
+        tagView.addTag("123123312")
+        tagView.addTag("2")
+        tagView.addTag("123312")
+        tagView.addTag("12")
+        tagView.addTag("12")
+        
+        tagView.alignment = .leading
+    }
+    
+    private func setupStoryboardViews() {
         tagListView.delegate = self
         tagListView.addTag("TagListView")
         tagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")

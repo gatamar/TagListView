@@ -327,7 +327,7 @@ open class TagListView: UIView {
         return CGSize(width: frame.width, height: height)
     }
     
-    private let maxTagViewSize: Int = 3
+    private let maxTagViewSize: Int = 10
     private func createNewTagView(_ title: String) -> TagView {
         let tagView = TagView(title: String(title.prefix(maxTagViewSize)) )
         

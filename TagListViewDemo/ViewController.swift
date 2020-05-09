@@ -19,22 +19,37 @@ class ViewController: UIViewController, TagListViewDelegate {
         setupViewsManually()
     }
     
+    private var removeButton: UIButton!
+    private var tagView: TagListView!
+    private var simpleView: UIView!
+    
+    private func addRemoveButton() {
+        removeButton = UIButton(type: .custom)
+        removeButton.frame = CGRect(x: 0, y: 0, width: simpleView.bounds.width, height: simpleView.bounds.height/2)
+        removeButton.layer.cornerRadius = 10
+        removeButton.clipsToBounds = true
+        removeButton.layer.backgroundColor = UIColor.blue.cgColor
+        removeButton.addTarget(self, action: #selector(removeButtonPressed), for: .touchUpInside)
+        
+        simpleView.addSubview(removeButton)
+    }
+    
+    @objc func removeButtonPressed() {
+        tagView.enableRemoveButton = !tagView.enableRemoveButton
+    }
+    
     private func setupViewsManually() {
-        let simpleView = UIView(frame: view.bounds)
+        simpleView = UIView(frame: view.bounds)
         simpleView.backgroundColor = .white
         view.addSubview(simpleView)
         
-        let tagView = TagListView(frame: CGRect(x: 0, y: simpleView.bounds.height/2, width: simpleView.bounds.width, height: simpleView.bounds.height/2))
+        tagView = TagListView(frame: CGRect(x: 0, y: simpleView.bounds.height/2, width: simpleView.bounds.width, height: simpleView.bounds.height/2))
         simpleView.addSubview(tagView)
+        
+        addRemoveButton()
         
         tagView.backgroundColor = .blue
         
-        tagView.delegate = self
-        tagView.textFont = .systemFont(ofSize: 15)
-        tagView.shadowRadius = 2
-        tagView.shadowOpacity = 0.4
-        tagView.shadowColor = UIColor.black
-        tagView.shadowOffset = CGSize(width: 1, height: 1)
         tagView.addTag("Inboard")
         tagView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
         tagView.addTag("Pomotodo")
@@ -47,7 +62,25 @@ class ViewController: UIViewController, TagListViewDelegate {
         tagView.addTag("12")
         tagView.addTag("12")
         
-        tagView.alignment = .leading
+        tagView.delegate = self
+        tagView.textFont = .systemFont(ofSize: 40)
+        tagView.shadowRadius = 2
+        tagView.shadowOpacity = 0.4
+        tagView.shadowColor = UIColor.black
+        tagView.shadowOffset = CGSize(width: 1, height: 1)
+        
+        tagView.tagBackgroundColor = .orange
+        tagView.borderColor = .red
+        tagView.marginX = 10
+        tagView.marginY = 10
+        tagView.cornerRadius = 10
+        tagView.alignment = .left
+        tagView.removeIconLineColor = .green
+        tagView.removeIconLineWidth = 3
+        
+        tagView.selectedTextColor = .red
+        tagView.selectedBorderColor = .white
+        tagView.tagSelectedBackgroundColor = .yellow
     }
     
     private func setupStoryboardViews() {

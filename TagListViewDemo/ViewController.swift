@@ -12,17 +12,22 @@ class ViewController: UIViewController, TagListViewDelegate {
 
     @IBOutlet weak var tagListView: TagListView!
     @IBOutlet weak var biggerTagListView: TagListView!
-    @IBOutlet weak var biggestTagListView: TagListView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tagListView.delegate = self
         tagListView.addTag("TagListView")
+        tagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
         tagListView.addTag("TEAChart")
+        tagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
         tagListView.addTag("To Be Removed")
+        tagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
         tagListView.addTag("To Be Removed")
         tagListView.addTag("Quark Shell")
+        tagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
+        
+        
         tagListView.removeTag("To Be Removed")
         tagListView.addTag("On tap will be removed").onTap = { [weak self] tagView in
             self?.tagListView.removeTagView(tagView)
@@ -43,16 +48,12 @@ class ViewController: UIViewController, TagListViewDelegate {
         biggerTagListView.shadowColor = UIColor.black
         biggerTagListView.shadowOffset = CGSize(width: 1, height: 1)
         biggerTagListView.addTag("Inboard")
+        biggerTagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
         biggerTagListView.addTag("Pomotodo")
+        biggerTagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
         biggerTagListView.addTag("Halo Word")
-        biggerTagListView.alignment = .center
-        
-        biggestTagListView.delegate = self
-        biggestTagListView.textFont = .systemFont(ofSize: 24)
-        // it is also possible to add all tags in one go
-        biggestTagListView.addTags(["all", "your", "tag", "are", "belong", "to", "us"])
-        biggestTagListView.alignment = .right
-        
+        biggerTagListView.addTag("A lot of text... \n Multiline text... \n Event more Multiline text ")
+        biggerTagListView.alignment = .leading
     }
     
     override func didReceiveMemoryWarning() {

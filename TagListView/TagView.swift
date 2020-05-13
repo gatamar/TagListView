@@ -8,9 +8,16 @@
 
 import UIKit
 
+protocol TagViewTouchDelegate: class {
+    func tagTouchesBegan(_ touches: Set<UITouch>, with event: UIEvent?, tag: TagView?)
+    func tagTouchesMoved(_ touches: Set<UITouch>, with event: UIEvent?, tag: TagView?)
+    func tagTouchesEnded(_ touches: Set<UITouch>, with event: UIEvent?, tag: TagView?)
+}
+
 @IBDesignable
 open class TagView: UIButton {
-
+    weak var touchDelegate: TagViewTouchDelegate?
+    
     @IBInspectable open var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
@@ -148,10 +155,6 @@ open class TagView: UIButton {
         }
     }
     
-    /// Handles Tap (TouchUpInside)
-    open var onTap: ((TagView) -> Void)?
-    open var onLongPress: ((TagView) -> Void)?
-    
     // MARK: - init
     
     required public init?(coder aDecoder: NSCoder) {
@@ -173,15 +176,8 @@ open class TagView: UIButton {
         frame.size = intrinsicContentSize
         addSubview(removeButton)
         removeButton.tagView = self
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress))
-        self.addGestureRecognizer(longPress)
     }
-    
-    @objc func longPress() {
-        onLongPress?(self)
-    }
-    
+
     // MARK: - layout
 
     override open var intrinsicContentSize: CGSize {
@@ -214,6 +210,21 @@ open class TagView: UIButton {
             removeButton.frame.size.height = self.frame.height
             removeButton.frame.origin.y = 0
         }
+    }
+    
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        touchDelegate?.tagTouchesBegan(touches, with: event, tag: self)
+    }
+    
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        touchDelegate?.tagTouchesMoved(touches, with: event, tag: self)
+    }
+    
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        touchDelegate?.tagTouchesEnded(touches, with: event, tag: self)
     }
 }
 

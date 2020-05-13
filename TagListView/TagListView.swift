@@ -9,12 +9,12 @@
 import UIKit
 
 @objc public protocol TagListViewDelegate {
-    @objc optional func tagPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
     @objc optional func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
 }
 
 @IBDesignable
 open class TagListView: UIView {
+    weak var touchDelegate: TagViewTouchDelegate?
     
     @IBInspectable open dynamic var textColor: UIColor = .white {
         didSet {
@@ -348,15 +348,17 @@ open class TagListView: UIView {
         tagView.removeButtonIconSize = removeButtonIconSize
         tagView.enableRemoveButton = enableRemoveButton
         tagView.removeIconLineColor = removeIconLineColor
-        tagView.addTarget(self, action: #selector(tagPressed(_:)), for: .touchUpInside)
+        assert(touchDelegate != nil)
+        tagView.touchDelegate = touchDelegate
+        
         tagView.removeButton.addTarget(self, action: #selector(removeButtonPressed(_:)), for: .touchUpInside)
         
         // On long press, deselect all tags except this one
-        tagView.onLongPress = { [unowned self] this in
-            self.tagViews.forEach {
-                $0.isSelected = $0 == this
-            }
-        }
+//        tagView.onLongPress = { [unowned self] this in
+//            self.tagViews.forEach {
+//                $0.isSelected = $0 == this
+//            }
+//        }
         
         return tagView
     }
@@ -438,12 +440,6 @@ open class TagListView: UIView {
     }
     
     // MARK: - Events
-    
-    @objc func tagPressed(_ sender: TagView!) {
-        sender.onTap?(sender)
-        delegate?.tagPressed?(sender.currentTitle ?? "", tagView: sender, sender: self)
-    }
-    
     @objc func removeButtonPressed(_ closeButton: CloseButton!) {
         if let tagView = closeButton.tagView {
             delegate?.tagRemoveButtonPressed?(tagView.currentTitle ?? "", tagView: tagView, sender: self)
